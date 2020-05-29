@@ -209,5 +209,11 @@ NSDictionary *_launchOptions;
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     //  [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 }
+- (void)applicationWillResignActive:(UIApplication *)application {
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+         [JPushPlugin fireDocumentEvent:@"kEnterBackground" jsString:@"window['imService'].XMPPLogout();"];
+     });
+}
 
 @end
