@@ -84,7 +84,21 @@ public class JPushPlugin extends CordovaPlugin {
             transmitNotificationReceive(notificationTitle, notificationAlert, notificationExtras);
         }
     }
-
+     public void onPause(boolean multitasking) {
+        Log.i(TAG, "----------------  onPause");
+        Log.i(TAG, "----------------  断开消息链接");
+        String formatJs = "window['imService'].XMPPLogout();";
+        cordovaActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                instance.webView.loadUrl("javascript:" + formatJs);
+            }
+        });
+        shouldCacheMsg = true;
+        if (isStatisticsOpened && multitasking) {
+            JPushInterface.onPause(this.cordova.getActivity());
+        }
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
