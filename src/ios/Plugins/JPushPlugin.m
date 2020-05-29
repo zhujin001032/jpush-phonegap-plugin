@@ -98,7 +98,12 @@
 +(void)fireDocumentEvent:(NSString*)eventName jsString:(NSString*)jsString{
   if (SharedJPushPlugin) {
     dispatch_async(dispatch_get_main_queue(), ^{
-      [SharedJPushPlugin.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireDocumentEvent('jpush.%@',%@)", eventName, jsString]];
+        if ([eventName isEqualToString:@"kEnterBackground"]) {
+            [SharedJPushPlugin.commandDelegate evalJs:jsString];
+        } else {
+            [SharedJPushPlugin.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireDocumentEvent('jpush.%@',%@)", eventName, jsString]];
+        }
+      
     });
     return;
   }
